@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import classes from './StartingPageContent.module.css';
+import VerifyEmail from './VerifyEmail';
 
 const StartingPageContent = () => {
   return (
@@ -9,6 +10,7 @@ const StartingPageContent = () => {
         Please complete your  <Link to='/profile'>profile</Link>
       </div>
       <hr />
+      <VerifyEmail />
     </section>
   );
 };

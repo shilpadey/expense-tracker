@@ -11,7 +11,8 @@ const MainNavigation = () => {
   const logoutHandler = () => {
     authCntx.logout();
     history.replace('/auth');
-  }
+  };
+
   return (
     <header className={classes.header}>
       <Link to='/'>
