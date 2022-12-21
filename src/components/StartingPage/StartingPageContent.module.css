@@ -1,0 +1,26 @@
+.starting {
+  margin: 3rem auto;
+  margin-top: -10px;
+}
+
+.starting h1 {
+  font-size: 2.5rem;
+  text-align: left;
+}
+
+.starting hr{
+  margin-top: -40px;
+}
+
+.welcome {
+  position: relative;
+  left:78%;
+  right: 50px;
+  bottom: 80px;
+  background-color: rgb(245, 212, 212);
+  width:300px;
+  height: 30px;
+  text-align: center;
+  border-radius: 5px;
+  font-style: italic;
+}
