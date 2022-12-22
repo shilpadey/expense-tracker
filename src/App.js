@@ -4,6 +4,7 @@ import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profile/UserProfile';
 import AuthPage from './pages/AuthPage';
+import ExpensePage from './pages/ExpensePage';
 import HomePage from './pages/HomePage';
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path='/forget-password'>
           <ForgetPassword />
+        </Route>
+        <Route path='/expense'>
+          <ExpensePage />
         </Route>
         <Route path="*">
           <Redirect to="/" />

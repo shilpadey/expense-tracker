@@ -27,6 +27,9 @@ const MainNavigation = () => {
             {authCntx.isLoggedIn && <Link to='/profile'>Profile</Link>}
           </li>
           <li>
+            {authCntx.isLoggedIn && <Link to='/expense'>Expense</Link>}
+          </li>
+          <li>
             {authCntx.isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
           </li>
         </ul>
