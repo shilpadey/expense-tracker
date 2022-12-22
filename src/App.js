@@ -1,4 +1,5 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
+import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 
 import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profile/UserProfile';
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route path='/profile'>
           <UserProfile />
+        </Route>
+        <Route path='/forget-password'>
+          <ForgetPassword />
         </Route>
         <Route path="*">
           <Redirect to="/" />

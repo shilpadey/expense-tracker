@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 
 import classes from './AuthForm.module.css';
@@ -139,7 +139,7 @@ const AuthForm = () => {
           <div className={classes.actions}>
             {!isLoading && <button>{isLogin ? 'Login' : 'Create Account'}</button>}
             {isLoading && <p>Sending Request...</p>}
-            {isLogin && <a href='#'>Forget Password</a>}
+            {isLogin && <Link to='/forget-password'>Forget Password</Link>}
           </div>
         </form>
       </div>
