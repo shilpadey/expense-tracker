@@ -5,6 +5,7 @@ import axios from "axios";
 import classes from './ExpenseForm.module.css';
 
 const ExpenseForm = () => {
+    const [ expenseObj , setExpenseObj ] = useState({});
     const [ expenses , setExpenses ] = useState([]);
     const amountInputRef = useRef();
     const descriptionRef = useRef();
@@ -48,20 +49,51 @@ const ExpenseForm = () => {
             category : enteredCategory,
         };
 
-        try{
-            const response = await axios.post('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json',expenseData)
-            if(response.status === 201){
-                console.log(response);
+        if(expenseObj.id){
+            expenseObj.category = categoryRef.current.value;
+            expenseObj.description = descriptionRef.current.value;
+            expenseObj.amount = amountInputRef.current.value;
+            try{
+                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${expenseObj.id}.json`,expenseObj)
+                console.log(putResponse.data);
+                setExpenseObj({});
                 getExpenseHandler();
+            }catch (err){
+                console.log(err);
             }
-        }catch (err){
-            console.log(err);
+        }else{
+            try{
+                const response = await axios.post('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json',expenseData)
+                if(response.status === 201){
+                    console.log(response);
+                    getExpenseHandler();
+                }
+            }catch (err){
+                console.log(err);
+            }
         }
-
 
         amountInputRef.current.value = "";
         descriptionRef.current.value = "";
         categoryRef.current.value = "Choose a Category";
+    };
+
+    const deleteExpenseHandler = async(id) => {
+        try{
+            const deleteRes = await axios.delete(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${id}.json`)
+            setExpenses(expenses.filter((item) => item.id !== id))
+            console.log(deleteRes);
+            console.log("Successfully expense deleted");
+        }catch (err){
+            console.log(err);
+        }
+    };
+
+    const editExpenseHandler = (item) => {
+        amountInputRef.current.value = item.amount;
+        descriptionRef.current.value = item.description;
+        categoryRef.current.value = item.category; 
+        setExpenseObj(item)
     };
 
 
@@ -98,7 +130,11 @@ const ExpenseForm = () => {
                 </form>
             </div>
             <div>
-                <ExpenseList items={expenses}/>
+                <ExpenseList 
+                    items={expenses}
+                    onDelete={deleteExpenseHandler}
+                    onEdit= {editExpenseHandler}
+                />
             </div>
         </section>
     );

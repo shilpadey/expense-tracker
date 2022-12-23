@@ -1,25 +1,23 @@
 .expenses {
   margin: 2rem auto;
   width: 90%;
-  max-width: 40rem;
+  max-width: 35rem;
 }
 
 .expenses ul {
+  display: flex;
+  justify-content: center;
   list-style: none;
   padding: 1rem;
-}
-
-.expenses li {
   border: 1px solid rgb(140, 206, 254);
   border-radius: 6px;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
 }
 
+
+
 .expenses span{
-  display:inline-block;
   background-color: rgb(251, 253, 255);
-  width: 25%;
+  width: 15%;
   height: 40px;
   color:rgb(6, 6, 6);
   font-style: italic;
@@ -27,7 +25,18 @@
   border: none;
  text-align: center;
  font-size: 18px;
- margin-left: 2rem;
+ margin-left: 1.5rem;
+ margin-right: 10px;
+}
+
+.expenses button{
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: #688cf9;
+  border: 1px solid #75a0fe;
+  border-radius: 50px;
+  margin-left: 10px;
 }
 
 .total{

@@ -7,22 +7,22 @@ const ExpenseList = (props) => {
         totalExpense = Number(element.amount) + totalExpense;
     });
 
-    const expenseList = (
-        <ul>
-            {props.items.map((item) => (
-                <li key={item.id} id={item.id}>
-                    <span>{item.category}</span>
-                    <span>{item.description}</span>
-                    <span>&#8377;{item.amount}</span>
-                </li>
-            ))}
-        </ul>
-    );
 
     return (
         <>
             <div className={classes.expenses}>
-                {expenseList}
+                {props.items.map((item) => (
+                    <ul key={item.id}>
+                        <li  id={item.id}>
+                            <span>{item.category}</span>
+                            <span>{item.description}</span>
+                            <span>&#8377;{item.amount}</span>
+                        </li>
+                        <button onClick={() => props.onDelete(item.id)}>Delete</button>
+                        <button onClick={() => props.onEdit(item)}>Edit</button>
+                    </ul>
+                ))}
+                
             </div>
             <div className={classes.total}>
                 Total Amount: &#8377;{totalExpense}
