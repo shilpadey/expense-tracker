@@ -10,8 +10,7 @@ const ExpenseList = (props) => {
     const expenseList = (
         <ul>
             {props.items.map((item) => (
-                <li key={item.id}>
-                    {item.id}
+                <li key={item.id} id={item.id}>
                     <span>{item.category}</span>
                     <span>{item.description}</span>
                     <span>&#8377;{item.amount}</span>

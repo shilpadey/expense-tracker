@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
+import axios from "axios";
 
 import classes from './ExpenseForm.module.css';
 
@@ -9,7 +10,32 @@ const ExpenseForm = () => {
     const descriptionRef = useRef();
     const categoryRef = useRef();
 
-    const addExpenseHandler = (event) => {
+    const getExpenseHandler = async() => {
+        try{
+            const res = await axios.get('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json')
+            console.log(res.data);
+            const expenseArr = [];
+            for(const key in res.data){
+                expenseArr.push({
+                    id: key,
+                    amount : res.data[key].amount,
+                    description : res.data[key].description,
+                    category : res.data[key].category
+                })
+            }
+            console.log(expenseArr);
+            setExpenses(expenseArr);
+            
+        }catch (err){
+            console.log(err);
+        }
+    };
+
+    useEffect(() => {
+        getExpenseHandler();
+    },[]);
+
+    const addExpenseHandler = async(event) => {
         event.preventDefault();
 
         const enteredAmount = amountInputRef.current.value;
@@ -22,9 +48,16 @@ const ExpenseForm = () => {
             category : enteredCategory,
         };
 
-        setExpenses((prevState) => {
-           return [expenseData , ...prevState];
-        });
+        try{
+            const response = await axios.post('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json',expenseData)
+            if(response.status === 201){
+                console.log(response);
+                getExpenseHandler();
+            }
+        }catch (err){
+            console.log(err);
+        }
+
 
         amountInputRef.current.value = "";
         descriptionRef.current.value = "";
@@ -34,12 +67,13 @@ const ExpenseForm = () => {
 
     return (
         <section>
-            <div className={classes.date}>
-                <input type="date"/>
-            </div>
+            
             <div className={classes.form}>
                 <h1>Expense Tracker</h1>
                 <form onSubmit={addExpenseHandler}>
+                    <div className={classes.date}>
+                        <input type="date"/>
+                    </div>
                     <div className={classes.control}>
                         <input type="number" placeholder="Amount" ref={amountInputRef}/>
                     </div>
