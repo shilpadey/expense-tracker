@@ -27,6 +27,7 @@ const ExpenseList = (props) => {
             <div className={classes.total}>
                 Total Amount: &#8377;{totalExpense}
             </div>
+            
         </>
     );
 };

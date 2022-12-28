@@ -1,15 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
 import axios from "axios";
+import { expenseActions } from "../../redux-store/expense";
 
 import classes from './ExpenseForm.module.css';
+import { useDispatch } from "react-redux";
 
 const ExpenseForm = () => {
+    const dispatch = useDispatch();
     const [ expenseObj , setExpenseObj ] = useState({});
     const [ expenses , setExpenses ] = useState([]);
     const amountInputRef = useRef();
     const descriptionRef = useRef();
     const categoryRef = useRef();
+
 
     const getExpenseHandler = async() => {
         try{
@@ -26,6 +30,7 @@ const ExpenseForm = () => {
             }
             console.log(expenseArr);
             setExpenses(expenseArr);
+            dispatch(expenseActions.storeExpense(expenseArr));
             
         }catch (err){
             console.log(err);
@@ -34,7 +39,8 @@ const ExpenseForm = () => {
 
     useEffect(() => {
         getExpenseHandler();
-    },[]);
+    },[])
+
 
     const addExpenseHandler = async(event) => {
         event.preventDefault();
@@ -50,11 +56,14 @@ const ExpenseForm = () => {
         };
 
         if(expenseObj.id){
-            expenseObj.category = categoryRef.current.value;
-            expenseObj.description = descriptionRef.current.value;
-            expenseObj.amount = amountInputRef.current.value;
+
+            let expObj = {
+                category : categoryRef.current.value,
+                description : descriptionRef.current.value,
+                amount : amountInputRef.current.value,
+            }
             try{
-                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${expenseObj.id}.json`,expenseObj)
+                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${expenseObj.id}.json`,expObj)
                 console.log(putResponse.data);
                 setExpenseObj({});
                 getExpenseHandler();
@@ -64,10 +73,8 @@ const ExpenseForm = () => {
         }else{
             try{
                 const response = await axios.post('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json',expenseData)
-                if(response.status === 201){
                     console.log(response);
                     getExpenseHandler();
-                }
             }catch (err){
                 console.log(err);
             }

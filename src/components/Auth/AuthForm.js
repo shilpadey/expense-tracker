@@ -1,12 +1,14 @@
-import { useContext, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import AuthContext from '../../store/auth-context';
+import { authActions } from '../../redux-store/auth';
 
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
+  const dispatch = useDispatch();
+  
   const history = useHistory()
-  const authCtx = useContext(AuthContext);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordRef = useRef();
@@ -48,8 +50,9 @@ const AuthForm = () => {
                 const data = await response.json();
 
                 alert("User has successfully Loged in.");
-                authCtx.login(data.idToken);
+                localStorage.setItem('token' , data.idToken);
                 localStorage.setItem("userID", data.localId);
+                dispatch(authActions.login(data.idToken));
                 emailInputRef.current.value = "";
                 passwordInputRef.current.value = "";
                 setIsLogin(true);

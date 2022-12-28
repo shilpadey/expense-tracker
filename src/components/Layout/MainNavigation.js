@@ -1,15 +1,16 @@
-import { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import AuthContext from '../../store/auth-context';
+import { authActions } from '../../redux-store/auth';
 
 import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector(state => state.auth.isAuthenticated);
   const history = useHistory()
-  const authCntx = useContext(AuthContext);
 
   const logoutHandler = () => {
-    authCntx.logout();
+    dispatch(authActions.logout());
     history.replace('/auth');
   };
 
@@ -21,16 +22,16 @@ const MainNavigation = () => {
       <nav>
         <ul>
           <li>
-            {!authCntx.isLoggedIn && <Link to='/auth'>Login</Link>}
+            {!isAuth && <Link to='/auth'>Login</Link>}
           </li>
           <li>
-            {authCntx.isLoggedIn && <Link to='/profile'>Profile</Link>}
+            {isAuth && <Link to='/profile'>Profile</Link>}
           </li>
           <li>
-            {authCntx.isLoggedIn && <Link to='/expense'>Expense</Link>}
+            {isAuth && <Link to='/expense'>Expense</Link>}
           </li>
           <li>
-            {authCntx.isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
+            {isAuth && <button onClick={logoutHandler}>Logout</button>}
           </li>
         </ul>
       </nav>

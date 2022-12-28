@@ -1,11 +1,10 @@
-import React, {  useRef , useEffect, useContext } from 'react';
-import AuthContext from '../../store/auth-context';
+import React, {  useRef , useEffect } from 'react';
 import { GoMarkGithub } from "react-icons/go";
 import { CiGlobe } from "react-icons/ci";
 import classes from './ProfileForm.module.css';
 
 const ProfileForm = () => {
-  const authCtx = useContext(AuthContext);
+  const token = localStorage.getItem('token');
   const nameInputRef = useRef();
   const photoInputRef = useRef();
 
@@ -16,7 +15,7 @@ const ProfileForm = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: authCtx.token,
+            idToken: token,
             returnSecureToken: true,
           }),
           headers: {
@@ -56,7 +55,7 @@ const ProfileForm = () => {
         {
           method: 'POST',
           body: JSON.stringify({
-            idToken: authCtx.token,
+            idToken: token,
             displayName: enteredName,
             photoUrl: enteredPhotoUrl,
             returnSecureToken: true,

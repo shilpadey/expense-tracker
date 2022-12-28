@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
-import AuthContext from "../../store/auth-context";
+import React, { useState } from "react";
 
 import classes from './VerifyEmail.module.css';
 
 const VerifyEmail = () => {
-    const authCtx = useContext(AuthContext);
+    const token = localStorage.getItem('token');
     const [ emailVerified, setEmailVerified ] = useState(false);
 
     const sentVerificationHandler = async() => {
@@ -14,7 +13,7 @@ const VerifyEmail = () => {
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        idToken: authCtx.token,
+                        idToken: token,
                         requestType: "VERIFY_EMAIL",
                         returnSecureToken: true,
                     }),
