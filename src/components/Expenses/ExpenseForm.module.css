@@ -48,10 +48,7 @@
 }
 
 .actions {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 1.5rem;
 }
   
 .actions button {
@@ -61,7 +58,7 @@
     background-color: #688cf9;
     border: 1px solid #75a0fe;
     border-radius: 50px;
-    padding: 0.5rem 5rem;
+    padding: 0.5rem 2rem;
 }
   
 .actions button:hover {

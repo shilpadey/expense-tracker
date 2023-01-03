@@ -9,16 +9,17 @@ const MainNavigation = () => {
   const isAuth = useSelector(state => state.auth.isAuthenticated);
   const history = useHistory()
 
-  const logoutHandler = () => {
+  const logoutHandler = (event) => {
+    event.preventDefault();
+
+    localStorage.removeItem('token');
     dispatch(authActions.logout());
     history.replace('/auth');
   };
 
   return (
     <header className={classes.header}>
-      <Link to='/'>
         <div className={classes.logo}>Expense Tracker</div>
-      </Link>
       <nav>
         <ul>
           <li>

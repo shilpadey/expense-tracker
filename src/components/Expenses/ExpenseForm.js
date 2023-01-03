@@ -1,13 +1,17 @@
-import React, {  useEffect, useRef, useState } from "react";
+import React, {   useCallback, useEffect, useRef, useState } from "react";
 import ExpenseList from "./ExpenseList";
 import axios from "axios";
 import { expenseActions } from "../../redux-store/expense";
 
 import classes from './ExpenseForm.module.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExpenseForm = () => {
+    const [color , setColor] = useState('white');
+    const [download,setDownload] = useState(false);
     const dispatch = useDispatch();
+    const setPremium = useSelector(state => state.expense.premium);
+    //const mode = useSelector(state => state.theme.mode);
     const [ expenseObj , setExpenseObj ] = useState({});
     const [ expenses , setExpenses ] = useState([]);
     const amountInputRef = useRef();
@@ -15,7 +19,7 @@ const ExpenseForm = () => {
     const categoryRef = useRef();
 
 
-    const getExpenseHandler = async() => {
+    const getExpenseHandler = useCallback(async() => {
         try{
             const res = await axios.get('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json')
             console.log(res.data);
@@ -35,11 +39,11 @@ const ExpenseForm = () => {
         }catch (err){
             console.log(err);
         }
-    };
+    }, [dispatch])
 
     useEffect(() => {
         getExpenseHandler();
-    },[])
+    },[getExpenseHandler])
 
 
     const addExpenseHandler = async(event) => {
@@ -103,47 +107,75 @@ const ExpenseForm = () => {
         setExpenseObj(item)
     };
 
+    const activePremiumButtonHandler = (color) => {
+        setDownload(true);
+        setColor(color);
+    }
+
+    useEffect(() => {
+        document.body.style.backgroundColor = color;
+    }, [color]);
+
+    const downloadHandler = () => {
+        const data = JSON.stringify(expenses);
+        let blob = new Blob([data]);
+        console.log("blob", blob);
+        let file = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.download = "mydata.csv";
+        a.href = file;
+        a.click();   
+      };
+
 
     return (
-        <section>
-            
-            <div className={classes.form}>
-                <h1>Expense Tracker</h1>
-                <form onSubmit={addExpenseHandler}>
-                    <div className={classes.date}>
-                        <input type="date"/>
-                    </div>
-                    <div className={classes.control}>
-                        <input type="number" placeholder="Amount" ref={amountInputRef}/>
-                    </div>
-                    <div className={classes.control}>
-                     <input type="text" placeholder="Description" ref={descriptionRef}/>
-                    </div>
-                    <div className={classes.control}>
-                        <select ref={categoryRef} placeholder="Category">
-                            <option>Choose a Category</option>
-                            <option>Food</option>
-                            <option>Electricity</option>
-                            <option>Shopping</option>
-                            <option>Groceries</option>
-                            <option>Kitchen Utilites</option>
-                            <option>Vacation</option>
-                            <option>Miscellanous</option>
-                        </select>
-                    </div>
-                    <div className={classes.actions}>
-                        <button>Add Expense</button>
-                    </div>
-                </form>
+        <>
+            <section>
+                <div className={classes.form}>
+                    <h1>Expense Tracker</h1>
+                    <form onSubmit={addExpenseHandler}>
+                        <div className={classes.date}>
+                            <input type="date"/>
+                        </div>
+                        <div className={classes.control}>
+                            <input type="number" placeholder="Amount" ref={amountInputRef}/>
+                        </div>
+                        <div className={classes.control}>
+                        <input type="text" placeholder="Description" ref={descriptionRef}/>
+                        </div>
+                        <div className={classes.control}>
+                            <select ref={categoryRef} placeholder="Category">
+                                <option>Choose a Category</option>
+                                <option>Food</option>
+                                <option>Electricity</option>
+                                <option>Shopping</option>
+                                <option>Groceries</option>
+                                <option>Kitchen Utilites</option>
+                                <option>Vacation</option>
+                                <option>Miscellanous</option>
+                            </select>
+                        </div>
+                        <div className={classes.actions}>
+                            <button>Add Expense</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div>
+                    <ExpenseList 
+                        items={expenses}
+                        onDelete={deleteExpenseHandler}
+                        onEdit= {editExpenseHandler}
+                    />
+                </div>
+            </section>
+            <div className={classes.actions}>
+                {setPremium && (
+                    <button onClick={() => {activePremiumButtonHandler("gray")}}>Activate Premium</button>
+                )}
+                {download && <button onClick={downloadHandler}>Download Expense File</button>}
             </div>
-            <div>
-                <ExpenseList 
-                    items={expenses}
-                    onDelete={deleteExpenseHandler}
-                    onEdit= {editExpenseHandler}
-                />
-            </div>
-        </section>
+        </>
     );
 };
 
