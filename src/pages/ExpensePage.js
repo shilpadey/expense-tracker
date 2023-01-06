@@ -1,10 +1,10 @@
 import React from "react";
 import ExpenseForm from "../components/Expenses/ExpenseForm";
 
-const ExpensePage = () => {
+const ExpensePage = (props) => {
     return (
         <React.Fragment>
-            <ExpenseForm />
+            <ExpenseForm onChange={props.onChange}/>
         </React.Fragment>
     );
 };

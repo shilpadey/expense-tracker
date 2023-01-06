@@ -58,7 +58,7 @@ function App() {
           <ForgetPassword />
         </Route>
         <Route path='/expense'>
-          <ExpensePage />
+          <ExpensePage onChange={switchModeHandler}/>
         </Route>
         <Route path="*">
           <Redirect to="/" />

@@ -6,22 +6,21 @@ import { expenseActions } from "../../redux-store/expense";
 import classes from './ExpenseForm.module.css';
 import { useDispatch, useSelector } from "react-redux";
 
-const ExpenseForm = () => {
-    const [color , setColor] = useState('white');
+const ExpenseForm = (props) => {
     const [download,setDownload] = useState(false);
     const dispatch = useDispatch();
     const setPremium = useSelector(state => state.expense.premium);
-    //const mode = useSelector(state => state.theme.mode);
     const [ expenseObj , setExpenseObj ] = useState({});
     const [ expenses , setExpenses ] = useState([]);
     const amountInputRef = useRef();
     const descriptionRef = useRef();
     const categoryRef = useRef();
+    const userId = localStorage.getItem("userID");
 
 
     const getExpenseHandler = useCallback(async() => {
         try{
-            const res = await axios.get('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json')
+            const res = await axios.get(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}.json`)
             console.log(res.data);
             const expenseArr = [];
             for(const key in res.data){
@@ -67,7 +66,7 @@ const ExpenseForm = () => {
                 amount : amountInputRef.current.value,
             }
             try{
-                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${expenseObj.id}.json`,expObj)
+                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}/${expenseObj.id}.json`,expObj)
                 console.log(putResponse.data);
                 setExpenseObj({});
                 getExpenseHandler();
@@ -76,7 +75,7 @@ const ExpenseForm = () => {
             }
         }else{
             try{
-                const response = await axios.post('https://expense-5eae2-default-rtdb.firebaseio.com/expense.json',expenseData)
+                const response = await axios.post(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}.json`,expenseData)
                     console.log(response);
                     getExpenseHandler();
             }catch (err){
@@ -91,7 +90,7 @@ const ExpenseForm = () => {
 
     const deleteExpenseHandler = async(id) => {
         try{
-            const deleteRes = await axios.delete(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${id}.json`)
+            const deleteRes = await axios.delete(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}/${id}.json`)
             setExpenses(expenses.filter((item) => item.id !== id))
             console.log(deleteRes);
             console.log("Successfully expense deleted");
@@ -107,14 +106,12 @@ const ExpenseForm = () => {
         setExpenseObj(item)
     };
 
-    const activePremiumButtonHandler = (color) => {
+    const activePremiumButtonHandler = () => {
         setDownload(true);
-        setColor(color);
+        props.onChange();
     }
 
-    useEffect(() => {
-        document.body.style.backgroundColor = color;
-    }, [color]);
+    
 
     const downloadHandler = () => {
         const data = JSON.stringify(expenses);
@@ -150,6 +147,8 @@ const ExpenseForm = () => {
                                 <option>Electricity</option>
                                 <option>Shopping</option>
                                 <option>Groceries</option>
+                                <option>Recharge</option>
+                                <option>Medical Bills</option>
                                 <option>Kitchen Utilites</option>
                                 <option>Vacation</option>
                                 <option>Miscellanous</option>
@@ -171,7 +170,7 @@ const ExpenseForm = () => {
             </section>
             <div className={classes.actions}>
                 {setPremium && (
-                    <button onClick={() => {activePremiumButtonHandler("gray")}}>Activate Premium</button>
+                    <button onClick={activePremiumButtonHandler}>Activate Premium</button>
                 )}
                 {download && <button onClick={downloadHandler}>Download Expense File</button>}
             </div>

@@ -12,7 +12,7 @@
   margin-top: -40px;
 }
 
-.welcome {
+.welcome button{
   position: relative;
   left:78%;
   right: 50px;
@@ -23,4 +23,9 @@
   text-align: center;
   border-radius: 5px;
   font-style: italic;
+  border: transparent;
+}
+
+.welcome button:hover{
+  background-color: bisque;
 }
