@@ -10,7 +10,7 @@ const VerifyEmail = () => {
     const autoVerifyEmailCheck = async () => {
         try {
           const res = await fetch(
-            "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAWKUk44IYxrW_ootO-9v0x-K784qaGZgA",
+            "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDrZuldfNKHWl4qpbWeXSfzCwU0mG2Wb7s",
             {
               method: "POST",
               body: JSON.stringify({
@@ -43,7 +43,7 @@ const VerifyEmail = () => {
     const sentVerificationHandler = async() => {
         try{
             const response = await fetch(
-                'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAWKUk44IYxrW_ootO-9v0x-K784qaGZgA',
+                'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDrZuldfNKHWl4qpbWeXSfzCwU0mG2Wb7s',
                 {
                     method: 'POST',
                     body: JSON.stringify({

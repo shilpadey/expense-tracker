@@ -20,7 +20,7 @@ const ExpenseForm = (props) => {
 
     const getExpenseHandler = useCallback(async() => {
         try{
-            const res = await axios.get(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}.json`)
+            const res = await axios.get(`https://expense-b93d0-default-rtdb.firebaseio.com//expense/${userId}.json`)
             console.log(res.data);
             const expenseArr = [];
             for(const key in res.data){
@@ -38,7 +38,7 @@ const ExpenseForm = (props) => {
         }catch (err){
             console.log(err);
         }
-    }, [dispatch])
+    }, [dispatch,userId])
 
     useEffect(() => {
         getExpenseHandler();
@@ -66,7 +66,7 @@ const ExpenseForm = (props) => {
                 amount : amountInputRef.current.value,
             }
             try{
-                const putResponse = await axios.put(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}/${expenseObj.id}.json`,expObj)
+                const putResponse = await axios.put(`https://expense-b93d0-default-rtdb.firebaseio.com//expense/${userId}/${expenseObj.id}.json`,expObj)
                 console.log(putResponse.data);
                 setExpenseObj({});
                 getExpenseHandler();
@@ -75,7 +75,7 @@ const ExpenseForm = (props) => {
             }
         }else{
             try{
-                const response = await axios.post(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}.json`,expenseData)
+                const response = await axios.post(`https://expense-b93d0-default-rtdb.firebaseio.com//expense/${userId}.json`,expenseData)
                     console.log(response);
                     getExpenseHandler();
             }catch (err){
@@ -90,7 +90,7 @@ const ExpenseForm = (props) => {
 
     const deleteExpenseHandler = async(id) => {
         try{
-            const deleteRes = await axios.delete(`https://expense-5eae2-default-rtdb.firebaseio.com/expense/${userId}/${id}.json`)
+            const deleteRes = await axios.delete(`https://expense-b93d0-default-rtdb.firebaseio.com//expense/${userId}/${id}.json`)
             setExpenses(expenses.filter((item) => item.id !== id))
             console.log(deleteRes);
             console.log("Successfully expense deleted");

@@ -11,7 +11,7 @@ const ProfileForm = () => {
   const autoUpdateData = async() => {
     try{
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAWKUk44IYxrW_ootO-9v0x-K784qaGZgA",
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDrZuldfNKHWl4qpbWeXSfzCwU0mG2Wb7s",
         {
           method: "POST",
           body: JSON.stringify({
@@ -51,7 +51,7 @@ const ProfileForm = () => {
 
     try{
       const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAWKUk44IYxrW_ootO-9v0x-K784qaGZgA',
+        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDrZuldfNKHWl4qpbWeXSfzCwU0mG2Wb7s',
         {
           method: 'POST',
           body: JSON.stringify({
